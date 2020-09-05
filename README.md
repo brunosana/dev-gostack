@@ -2,12 +2,10 @@
 
 > Repositório para armazenar anotações do bootcamp gostack (NodeJS, ReactJS, ReacNative)
 
----
-
 ## Status
 
 <span style="color:orange;">- Nível:  1</span>
 
 <span style="color:red;">- Módulo:  Back-end com Node.js</span>
 
-<span style="color:darkblue;">- Aula: Conceitos NodeJS</span>
+<span style="color:darkblue;">- Aula: Conceitos API REST</span>
