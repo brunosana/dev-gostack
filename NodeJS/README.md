@@ -1,5 +1,17 @@
 ## NodeJS Notes
 
+### Tópicos:
+
+* NodeJS
+* NPM e Yarn
+* Arquitetura e Características do Node
+* CallStack
+* API Rest
+* Fluxo de requisição e resposta de um servidor
+* Métodos HTTP
+* Vantagens da API REST
+* HTTP Codes
+
 ## NodeJS
 
 > Node é uma ferramenta que permite o uso do Javascript no BackEnd, que é onde ficam as regras de negócio, serviços externos (como API de pagamentos, Nota Fiscal etc), conexão com o Banco de Dados etc.
@@ -43,3 +55,58 @@ PS:
 * Quando uma função é invocada ela entra na CallStack, e conforme outras forem executadas, elas também vão entrando em formato de _Pilha_.
 * O Event Loop monitora a callstack e pega função por função e as executa com os multithreads usando a libuv com o C++ por trás.
 * Como é uma PILHA, a função que vier por último será a primeira a ser executada. Esse padrão é chamadode LIFO (Last in First Out).
+
+---
+
+## API
+
+### Fluxo de requisição e resposta de um servidor
+
+1. Uma requisição e feita por um cliente (cliente = browser acessando uma URL via AJAX). Uma requisição AJAX é uma requisição feita por dentro do JS do browser.
+2. Ao chegar no BackEnd, uma resposta é retornada em uma estrutura de dados. (Ex. uma requisição de busca de usuários, o BackEnd vai no DB, busca os usuários, forma um vetor com eles e retorna para o cliente em um formato)
+3. O cliente recebe e pocessa o resultado (Que é diferente do Full MVC)
+
+> No Full MVC, o BackEnd (PhP ou Ruby) retorna o HTML com os dados já renderizados. Na API, a única coisa que o BackEnd retorna é uma estrutura com os dados que o FrontEnd precisa e ele que se responsabiliza em montar a interface (Seria o ReactNative, Vue, Angular etc).
+
+### Métodos HTTP
+
+> As Rotas utilizam métodos HTTP. São divididos no TIPO, RECURSO ou ROTA e PARAMETROS
+
+Principais tipos de métodos HTTP:
+
+* GET - Quando queremos buscar algum dado no BackEnd
+* POST - Criar alguma informação
+* PUT - Alterar alguma informação
+* DELETE - Deletar uma Informação
+
+Exs:
+
+* `GET` : `http://donelistapi.com/users`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) está buscando todos os usuários registrados.
+* `GET` : `http://donelistapi.com/users/2`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) e _com o parãmetro **/1**_ (Geralmente usado depois de uma rota, especificamos o que parâmetro e rota ao escrever as linhas de código) está buscando **um usuário específico com o ID = 1**.
+
+Para entender melhor: http://donelistapi.com/company/1/users?female=True
+
+URL da Rota | Route | Route Params | Query Params
+------------ | ------------ | ------------ | ------------
+http://donelistapi.com | `/company` e `/users` | `/1` | `?page=2`
+
+**Existe outra forma de enviar dados para a API através do Body, o dado é enviado no corpo da requisição.**
+
+### Vantagens da API REST
+
+* Múltiplos Clientes - Vários FrontEnds podem usar o mesmo BackEnd, seja para Web, Mobile, API Pública, serviços externos etc.
+* Utiliza o JSON para fazer a comunicação, ou seja, Vue, Angular, ReactJS, ReactNative podem usar o mesmo BackEnd, pois consegue trabalhar com formatos JSON.
+
+### HTTP Codes
+
+> Toda resposta que o BackEnd retorna, ela vem junto um HTTP Code, de 3 dígitos com o status da resposta. E eles tem o seu próprio padrão
+
+Principais HTTP Codes:
+
+HTTP Code | Descrição | Exempos
+------------ | ------------ | ------------
+1XX | HTTP Code informativo | n/a
+2XX | HTTP Code de Success, toda resposta que começa com 2 significa que o procedimento foi finalizado corretamente | 200: Success, 201: Created
+3XX | HTTP Code de redirecionamento | 301: Moved Permanently, 302: Moved
+4XX | HTTP Code de erro do cliente (Client Error) | 400: Bad Request, 401: Unauthorized, 404: Not Found
+5XX + | HTTP Code de erro no servidor (Server Error) | 500: Internal Server Error
