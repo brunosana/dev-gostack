@@ -82,7 +82,7 @@ Principais tipos de métodos HTTP:
 Exs:
 
 * `GET` : `http://donelistapi.com/users`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) está buscando todos os usuários registrados.
-* `GET` : `http://donelistapi.com/users/2`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) e _com o parãmetro **/1**_ (Geralmente usado depois de uma rota, especificamos o que parâmetro e rota ao escrever as linhas de código) está buscando **um usuário específico com o ID = 1**.
+* `GET` : `http://donelistapi.com/users/2`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) e _com o parâmetro **/1**_ (Geralmente usado depois de uma rota, especificamos o que parâmetro e rota ao escrever as linhas de código) está buscando **um usuário específico com o ID = 1**.
 
 Para entender melhor: http://donelistapi.com/company/1/users?page=True
 
@@ -110,3 +110,34 @@ HTTP Code | Descrição | Exempos
 3XX | HTTP Code de redirecionamento | 301: Moved Permanently, 302: Moved
 4XX | HTTP Code de erro do cliente (Client Error) | 400: Bad Request, 401: Unauthorized, 404: Not Found
 5XX + | HTTP Code de erro no servidor (Server Error) | 500: Internal Server Error
+
+---
+
+## Criando um projeto NodeJS
+
+* Primeiro cria-se um diretório para a aplicação Node.
+* `yarn init -y` para iniciar um projeto e criar o arquivo `package.json`.
+  * Package.json é o arquivo que armazena as informações de dependências do nosso projeto e algumas infos como _nome_, _descrição_, _versão_ etc.
+* Normalmente, começamos com uma estrutura de pastas, normalmente usamos:
+
+```yaml
+- NodeJSProjectFolder
+  - src
+    - index.js
+  - package.json
+```
+
+* Para desenvolver um BackEnd, o primeiro e um dos mais importantes pacotes que precisaremos instalar é o `express`, podemos instalar usando `yarn add express` no terminal (Disponibiliza a inclusão de rotas, urls diferentes com diferentes retornos e gerencia elas, assim como os middlewares).
+
+Para criar uma aplicação funcional com NodeJS e Express, usamos:
+
+```javascript
+const express = require('express');
+const app = express();
+app.get('/', (request, response) => {
+  return response.send('working')
+});
+app.listen(3333);
+```
+
+Executando `node src/index.js` e acessando o `http://localhost:3333/` no browser será possível observar o retorno passado.

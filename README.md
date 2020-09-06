@@ -8,4 +8,4 @@
 
 <span style="color:red;">- Módulo:  Back-end com Node.js</span>
 
-<span style="color:darkblue;">- Aula: Criando um projeto Node</span>
+<span style="color:darkblue;">- Aula: Configurando o Nodemon</span>
