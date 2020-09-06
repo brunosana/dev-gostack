@@ -84,11 +84,11 @@ Exs:
 * `GET` : `http://donelistapi.com/users`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) está buscando todos os usuários registrados.
 * `GET` : `http://donelistapi.com/users/2`. O método GET, usando a URL onde a API está hospedada, _com a rota **/users**_ (Vem depois do endereço da API) e _com o parãmetro **/1**_ (Geralmente usado depois de uma rota, especificamos o que parâmetro e rota ao escrever as linhas de código) está buscando **um usuário específico com o ID = 1**.
 
-Para entender melhor: http://donelistapi.com/company/1/users?female=True
+Para entender melhor: http://donelistapi.com/company/1/users?page=True
 
 URL da Rota | Route | Route Params | Query Params
 ------------ | ------------ | ------------ | ------------
-http://donelistapi.com | `/company` e `/users` | `/1` | `?page=2`
+http://donelistapi.com | `/company` e `/users` | `/1` | `?page=True`
 
 **Existe outra forma de enviar dados para a API através do Body, o dado é enviado no corpo da requisição.**
 
