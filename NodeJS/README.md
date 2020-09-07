@@ -13,6 +13,7 @@
 * HTTP Codes
 * Criando um projeto NodeJS
 * Nodemon
+* Usando Métodos HTTP
 
 ## NodeJS
 
@@ -176,3 +177,29 @@ Para otimizar ainda mais, podemos mudar a propriedade `main` para `src/index.js`
 ```
 
 Apenas o comando `nodemon` ele irá buscar o arquivo declarado na propriedade `main` do `package.json`. Podemos então inserir no terminal apenas o comando `yarn dev` e ele já irá iniciar o servidor com o arquivo `src/index.js`.
+
+---
+
+## Usando Métodos HTTP
+
+Para usar outros métodos HTTP, podemos apenas alterar o _tipo_ do método:
+
+```javascript
+// Recurso: Users
+app.get('/users', (request, response) => {
+  return response.json([
+    'usuario1',
+    'usuario2'
+  ]);
+});
+/*
+* Roda para deletar
+* Perceba que o recurso é o mesmo, a URL não muda, apenas o método.
+*/
+app.delete('/users', (request, response) => {
+  return response.json({})
+});
+});
+```
+
+Assim como os métodos `GET` e `DELETE`, `PUT` e `POST` também são declarados dessa forma. Claro que acima é apenas um exemplo, em um sistema normal, estaríamos inserindo, lendo e removendo dados de um Banco de Dados.
