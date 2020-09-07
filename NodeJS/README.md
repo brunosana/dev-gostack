@@ -11,6 +11,8 @@
 * Métodos HTTP
 * Vantagens da API REST
 * HTTP Codes
+* Criando um projeto NodeJS
+* Nodemon
 
 ## NodeJS
 
@@ -22,6 +24,7 @@ PS:
 * **NodeJS NÃO é uma linguagem, é uma Plataforma de desenvolvimento BackEnd**.
 * **NodeJS é construido em cima da _V8_** | V8 é a máquina que roda por trás do Chrome (ele precisa de uma engine/motor para interpretar o Javascript e produzir uma resposta).
 * NodeJS é comparável com -> PHP / Ruby / Python etc.
+* Nodemon
 
 ---
 
@@ -141,3 +144,35 @@ app.listen(3333);
 ```
 
 Executando `node src/index.js` e acessando o `http://localhost:3333/` no browser será possível observar o retorno passado.
+
+---
+
+### Nodemon
+
+É muito chato toda vez que uma alteração for feita no código, precisar ir no terminal, cancelar o processo e executar novamente. Para solucionar esse problema, podemos instalar o _nodemon_, um pacote que reinicia o server automaticamente sempre que há mudanças.
+
+Porém, quando a aplicação for ao ar, essa dependência não será necessária, para isso, adicionamos ela como **dependência de desenvolvimento usando a flag _-D_**: `yarn add nodemon -D`.
+
+Agora, podemos digitar `yarn nodemon src/index.js` e fazer qualquer alteração nos arquivos que o servidor já irá reiniciar automaticamente.
+
+Para otimizar ainda mais, podemos criar um script no `package.json` para não precisar digitar `yarn nodemon src/index.js` toda vez que for inicializar um servidor. Podemos então acrescentar no package.json:
+
+```
+"scripts": {
+  "dev" : "nodemon src/index.js"
+}
+```
+
+Para otimizar ainda mais, podemos mudar a propriedade `main` para `src/index.js`, assim, o trecho do script `dev` ficaria apenas `nodemon`:
+
+```
+[...]
+"main": "src/index.js",
+"license": "MIT",
+"scripts": {
+  "dev" : "nodemon"
+}
+[...]
+```
+
+Apenas o comando `nodemon` ele irá buscar o arquivo declarado na propriedade `main` do `package.json`. Podemos então inserir no terminal apenas o comando `yarn dev` e ele já irá iniciar o servidor com o arquivo `src/index.js`.
