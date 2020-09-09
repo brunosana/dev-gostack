@@ -15,6 +15,7 @@
 * Nodemon
 * Usando Métodos HTTP
 * Tipos de Parâmetros
+* Aplicação Funcional
 
 ## NodeJS
 
@@ -234,7 +235,7 @@ const query  = request.query;
 
 Ele irá retornar um objeto com todas as chaves e valores (No exemplo dado com a URL acima, o objeto _query_ será `{'Male': true, 'State': 'Fortaleza'}`).
 
-## Route Params
+### Route Params
 
 Normalmente usamos os Route Params para indentificar recursos que estão sendo atualizados ou deletados. Os Route Params precisam ser definidos na Rota, portanto, definiremos um Route Param chamado de _ID_ na nossa rota GET:
 
@@ -259,7 +260,7 @@ Ele irá retornar um objeto com todas as chaves e valores (No exemplo dado com a
 
 Podemos confirmar o objeto recebido usando o `console.log`.
 
-## Request Body
+### Request Body
 
 Suponha uma aplicação web com um _form_ para envio de dados (ex. criar um usuário). Então capturamos essa informação do Request Body em _JSON_.
 
@@ -287,3 +288,85 @@ Body do insomnia (Com método **POST**, e url **'http://localhost:3333/users'**)
 Ao enviar a requisição percebemos no terminal a impressão _undefined_.
 
 **Por padrão, o Express não interpreta os dados enviados em JSON. A API não irá entender. Para corrigir isso, logo após a linha `const app = express()` inserimos `app.use(express.json())`.**
+
+---
+
+## Aplicação Funcional
+
+Para criar um protótipo de aplicação (protótipo pois é apenas para funcionar, em produção nunca será utilizado) no _index.js_ criamos um vetor `const projects = [];` antes das rotas, para usar como Banco de Dados.
+
+Então, faremos a primeira rota GET para retornar todos os projetos:
+
+```javascript
+app.get('/projects', (request, response) => {
+    return response.json(projects);
+});
+```
+
+Para criar os projetos, faremos uma rota POST (Vamos assumir que um projeto possui um titulo 'title' e uma descrição 'desc'). Para registrar um _Unique ID_, poderíamos fazer com um inteior, mas vamos já usar um método usado em produção, que é o método `uuid` da lib `uuidv4`. Então, antes, precisamos instalar com `yarn add uuidv4` e logo depois importar no código com `const { uuid } = require('uuidv4');` (Perceba que já estamos usando a desconstrução). Então faremos:
+
+```javascript
+app.post('/projects', (request, response) => {
+    const { title, desc } = request.body;
+    const project = {id: uuid(), title, desc}
+    projects.push(project);
+    return response.json(project);
+});
+```
+
+Precisamos então de uma rota para atualizar um único projeto, passando o seu ID como parâmetro:
+
+```javascript
+app.put('/projects/:id', (request, response) => {
+    const { id } = request.params;
+    const { title, desc } = request.body;
+    const projectID = projects.findIndex(project => project.id === id);
+    console.log(projectID);
+    if(projectID < 0){
+        return response.status(400).json({error: 'Not Found'});
+    }
+    const project = {id, title, desc};
+    projects[projectID] = project;
+    return response.json(project);
+});
+```
+
+Para deletar um projeto, usamos a rota com o método _DELETE_:
+
+```javascript
+app.delete('/projects/:id', (request, response) => {
+    const { id } = request.params;
+    const projectID = projects.findIndex(project => project.id === id);
+    if (projectID < 0){
+        return response.status(400).json({error: 'Not Found'})
+    }
+    projects.splice(projectID, 1);
+    return response.status(204).send();
+});
+```
+
+Para buscar um único projeto, podemos fazer:
+
+```javascript
+app.get('/projects/:id', (request, response) => {
+    const { id } = request.params;
+    const projectID = projects.findIndex(project => project.id === id);
+    console.log(projectID);
+    if(projectID < 0){
+        return response.status(400).json({error: 'Not Found'});
+    }
+    return response.json(projects[projectID]);
+});
+```
+
+Ainda há como fazer a alteração da função que retorna todos os projetos para usarmos _FILTROS_ do **query params**. Suponha que vamos querer filtrar os projetos pelo título (parametro title):
+
+```javascript
+app.get('/projects', (request, response) => {
+    const { title } = request.query;
+    const results = title
+    ? projects.filter(project => project.title.includes(title))
+    : projects
+    return response.json(results);
+});
+```

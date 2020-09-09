@@ -8,4 +8,4 @@
 
 <span style="color:red;">- Módulo:  Back-end com Node.js</span>
 
-<span style="color:darkblue;">- Aula: Aplicação Funcional</span>
+<span style="color:darkblue;">- Aula: Middlewares</span>
