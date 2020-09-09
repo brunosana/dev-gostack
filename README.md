@@ -6,6 +6,10 @@
 
 <span style="color:orange;">- Nível:  1</span>
 
-<span style="color:red;">- Módulo:  Back-end com Node.js</span>
+<span style="color:red;">- Módulo:  Front-end com ReactJS</span>
 
-<span style="color:darkblue;">- Aula: Middlewares</span>
+<span style="color:darkblue;">- Aula: Conceitos ReactJS</span>
+
+## Desafios
+
+* [Desafio01](https://github.com/brunosana/rocketseat-gostack-desafio01) concluído

@@ -16,6 +16,7 @@
 * Usando Métodos HTTP
 * Tipos de Parâmetros
 * Aplicação Funcional
+* Middlewares
 
 ## NodeJS
 
@@ -369,4 +370,66 @@ app.get('/projects', (request, response) => {
     : projects
     return response.json(results);
 });
+```
+
+## Middlewares
+
+> O Middleware é um **interceptador** de requisições. Que pode interromper ou alterar dados da requisição.
+
+O Middleware é uma função que recebe os parâmetros **request**, **response** e opcionalmente o parâmetro **next**.
+
+Podemos tratar os middlewares da mesma forma que as rotas. Podemos manipular e até retornar respostas.
+
+**Quando utilizar o middleware?** - Quando algum trecho de código precise ser disparado de forma automática em uma ou mais rotas da aplicação!
+
+Ex. Vamos fazer um middleware que toda vez que uma rota for chamada ela seja impressa no terminal (Lembre que como o Express é linear, o middleware é declarado e invocado antes das rotas):
+
+```javascript
+function logRequest(request, response, next){
+    const { method, url } = request;
+    const logLabel = `[${method.toUpperCase()}] ${url}`;
+    console.log(logLabel);
+  return next();
+}
+app.use(logRequest);
+```
+
+A linha `app.use` significa que independente da rota, qualquer requisição que chegar na API ela irá passar pelo middleware. É por esse motivo que usamos o trecho `app.use(express.json())` antes das rotas. Pois esse middleware faz com que seja possível trabalhar com JSON.
+
+A linha `return next()` invoca a próxima função! No caso, como ela foi declarada antes de todas as rotas, existia uma sequência a ser invocada: `logRequest`-`rota`. Caso fosse necessário, poderíamos interromper a requisição sem escrever essa linha (É dessa forma que funcionam os sistemas de autenticação. Um ou mais middlewares para verificar e confirmar a identidade do usuário).
+
+Caso necessário, poderíamos também alterar os dados da requisição (Ex. alterar o título de um projeto) e chamar o próximo middleware.
+
+Podemos também invocar middlewares para rotas específicas. Ex. Vamos remover a linha `app.use(logRequest);` e vamos usar o middleware somente na rota GET. Basta apenas inserir a função antes do `(request, response)`:
+
+```javascript
+app.get('/projects', logRequest, (request, response) => {
+    const { title } = request.query;
+    const results = title
+    ? projects.filter(project => project.title.includes(title))
+    : projects
+    return response.json(results);
+});
+```
+
+E poderíamos colocar quantos middlewares fossem necessários para que a aplicação funcione: `app.get('/projects', logRequest, middleware2, middleware3 (request, response) => [...]`. O Express irá executar esses middlewares em sequência.
+
+Ex. Vamos fazer um middleware que valide o ID das rotas que recebem id (GET/id, PUT/id e DELETE/id). Caso inválido retornamos um erro e interrompemos totalmente a requisição.
+
+Para isso precisamos importar outro método da lib _uuidv4_ que é o `isuuid` (`const { uuid, isUuid } = require('uuidv4');`):
+
+```javascript
+function validateID(request, response, next){
+    const { id } = request.params;
+    if(!isUuid(id)){
+        return response.status(400).json({error: 'invalid id'});
+    }
+    return next();
+}
+```
+
+E podemos melhorar ainda mais, para não inserir o middleware rota por rota, podemos atribuir um middleware para todas as rotas com uma determinada URL, nesse exemplo será a `/projects/:id`:
+
+```javascript
+app.use('/projects/:id', validateID);
 ```
