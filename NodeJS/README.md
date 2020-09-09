@@ -14,6 +14,7 @@
 * Criando um projeto NodeJS
 * Nodemon
 * Usando Métodos HTTP
+* Tipos de Parâmetros
 
 ## NodeJS
 
@@ -95,6 +96,8 @@ URL da Rota | Route | Route Params | Query Params
 http://donelistapi.com | `/company` e `/users` | `/1` | `?page=True`
 
 **Existe outra forma de enviar dados para a API através do Body, o dado é enviado no corpo da requisição.**
+
+Os tipos de parâmetros serão abordados posteriormente
 
 ### Vantagens da API REST
 
@@ -203,3 +206,84 @@ app.delete('/users', (request, response) => {
 ```
 
 Assim como os métodos `GET` e `DELETE`, `PUT` e `POST` também são declarados dessa forma. Claro que acima é apenas um exemplo, em um sistema normal, estaríamos inserindo, lendo e removendo dados de um Banco de Dados.
+
+## Tipos de Parâmetros
+
+> Os tipos de parâmetros são formas do FrontEnd enviar algum tipo de informação para o backend.
+
+Temos 3 principais tipos de parâmetros:
+
+1. Query Params (Normalmente usados para filtro). São enviados na própria URL!
+2. Route Params (Identifica recursos para atualizando ou deletando). São enviados na própria URL
+3. Request Body (Conteúdo ao criar ou editar um recurso)
+
+### Query Params
+
+Usamos os query params inserindo uma interrogação (?) no final da Url, com a sintaxe `<chave>=<valor>` e inserimos mais query params com o _&_:
+
+```
+http://donelistapi.com/users?Male=true&State=Fortaleza
+```
+
+
+Para capturar todos os _Query Params_, na função do método HTTP usamos:
+
+```javascript
+const query  = request.query;
+```
+
+Ele irá retornar um objeto com todas as chaves e valores (No exemplo dado com a URL acima, o objeto _query_ será `{'Male': true, 'State': 'Fortaleza'}`).
+
+## Route Params
+
+Normalmente usamos os Route Params para indentificar recursos que estão sendo atualizados ou deletados. Os Route Params precisam ser definidos na Rota, portanto, definiremos um Route Param chamado de _ID_ na nossa rota GET:
+
+```javascript
+//Perceba os dois pontos antes do nome, é o caractere que declara o Route Param
+app.get('/users/:id')
+```
+
+Agora vamos usar o método GET para capturar apenas um usuário de _id_ = 8:
+
+```
+http://donelistapi.com/users/8
+```
+
+Para capturar todos os _Route Params_, na função do método HTTP usamos:
+
+```javascript
+const params = request.params;
+```
+
+Ele irá retornar um objeto com todas as chaves e valores (No exemplo dado com a URL acima, o objeto _params_ será `{'id': 8}`).
+
+Podemos confirmar o objeto recebido usando o `console.log`.
+
+## Request Body
+
+Suponha uma aplicação web com um _form_ para envio de dados (ex. criar um usuário). Então capturamos essa informação do Request Body em _JSON_.
+
+Podemos utilizar o [insomnia](https://insomnia.rest/download/) para executar testes de requisições, pois podemos enviar protocolos de vários tipos, com Route Params, Query Params e Request Body!
+
+Então escolhemos o corpo no formato _JSON_ e estruturamos a aplicação da seguinte forma:
+
+index.js
+```javascript
+app.post('/users', (request, response) => {
+    const body = request.body;
+    console.log(body);
+    return response.json({received: true});
+});
+```
+
+Body do insomnia (Com método **POST**, e url **'http://localhost:3333/users'**)
+```json
+{
+  "username": "brunosana",
+  "email": "bruno@bruno.com"
+}
+```
+
+Ao enviar a requisição percebemos no terminal a impressão _undefined_.
+
+**Por padrão, o Express não interpreta os dados enviados em JSON. A API não irá entender. Para corrigir isso, logo após a linha `const app = express()` inserimos `app.use(express.json())`.**
