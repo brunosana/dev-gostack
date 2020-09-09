@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Front-end com ReactJS</span>
 
-<span style="color:darkblue;">- Aula: Conceitos ReactJS</span>
+<span style="color:darkblue;">- Aula: Configurando Babel</span>
 
 ## Desafios
 
