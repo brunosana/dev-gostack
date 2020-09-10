@@ -104,7 +104,7 @@ Usamos vários loaders (Todo pacote com o sufixo _-loader_ é um pacote utilizad
 * css-loader
 * image-loader
 
-Dito isso, podemos inserir no terminal  `yarn add @babel/core @babel/cli @babel/preset-env @babel/preset-react webpack webpack-cli` para instalar as dependências necessárias.
+Dito isso, podemos inserir no terminal  `yarn add @babel/core @babel/cli @babel/preset-env @babel/preset-react webpack webpack-cli babel-loader` para instalar as dependências necessárias.
 
 Para setar as configurações relacionadas ao babel na raiz criamos o arquivo **babel.config.js** (Pode acessar a documentação [aqui](https://babeljs.io/docs/en/)) desse jeito:
 
@@ -123,4 +123,61 @@ module.exports = {
 
 Para testar a conversão, podemos executar no terminal `yarn babel src/index.js --out-file public/bundle.js`. Essa linha basicamente pega o `arquivo index.js` que está na pasta src e converte todo o código dele para outro código que o browser entenda, e salva o novo código em `public/bundle.js`. O nome do arquivo `bundle.js` é padrão!
 
-Feito isso, no arquivo `index.html` podemos importar o `bundle.js` com a tag `<script src="bundle.js"></script>`
+Feito isso, no arquivo `index.html` podemos importar o `bundle.js` com a tag `<script src="bundle.js"></script>`.
+
+### Configurando o Webpack
+
+Seguindo a mesma lógica do Babel, criamos na raiz do projeto o arquivo `webpack.config.js`. O Webpack automatiza a identificação do tipo de arquivo requisitado na aplicação e ativa um loader. Arquivos como .css, imagens etc.
+
+O arquivo ficará:
+
+```javascript
+const path = require('path');
+module.exports = {
+    entry: path.resolve(__dirname, 'src', 'index.js'),
+    output: {
+        path: path.resolve(__dirname, 'public'),
+        filename: 'bundle.js'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
+            }
+        ]
+    }
+}
+```
+
+* **path**: usamos o package PATH do Node para garantir que as importações funcione em todos os SOs e Ambientes diferentes
+* **entry**: Onde fica o primeiro arquivo (de entrada) da aplicação.
+* **output**: Onde fica o arquivo convertido (bundle.js convertido do Bundle)
+  * **path**: qual a pasta que o arquivo fica
+  * **filename**: nome do arquivo
+* **module**:
+  * **rules**: Arquivos JS usamos o Babel, porém, para outras extensões, precisamos de outros Loaders. Cada regra fica em um objeto! Cada objeto é um Loader.
+    * **test**: expressão regular (para saber todos os arquivos que termina com a extensão javascript)
+    * **exclude**: expressão regular para excluir a pasta *node_modules* da busca. Arquivos do JS que estão no node_modules é com a própria lib
+    * **use**: propriedade para atribuir o loader a ser usado dada as condições acima (test, exclude)
+
+Agora, no arquivo JS já podemos usar importações.
+
+Agora podemos usar `yarn webpack --mode development`. O código do `bundle.js` ficará bem maior e mais complexo de entender, mas não fará diferença pois não iremos alterar o arquivo final e sim os arquivos de desenvolvimento.
+
+Para otimizar ainda mais o desenvolvimento e **evitar que toda vez que fizermos uma alteração nos arquivos e não precisarmos refazer o comando e converter os arquivos novamente**, instalamos outra dependência com `yarn add webpack-dev-server -D`. A flag -D é vital pois utilizaremos a dependência apenas em desenvolvimento. Funciona como o _nodemon_.
+
+Dentro do `webpack.config.js` inserimos, antes do _module_, o trecho:
+
+```javascript
+devServer: {
+    contentBase: path.resolve(__dirname, 'public')
+},
+```
+
+* **contentBase**: caminho para o diretório com os arquivos públicos da aplicação.
+
+Podemos então executar o servidor usando `yarn webpack-dev-server --mode development` para conseguir alterar e verificar as alterações em tempo real.
