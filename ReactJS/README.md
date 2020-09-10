@@ -6,6 +6,7 @@
 * Diferenças entre React, ReactJS e React Native
 * Vantagens do React
 * Babel/Webpack | OBS
+* Configurando uma aplicação ReactJS
 
 ## React
 
@@ -72,3 +73,54 @@ Esses elementos são componentes criados no React.
   * **Criação do Bundle (Arquivo que contém todo o código JS da aplicação). Embora possa ter vários arquivos em desenvolvimento o webpack transforma todo o código compilado pelo Babel em um único arquivo.**
   * **Ensinar ao JavaScript como importar CSS, Imagens etc. Por padrão, o Babel não entende importação de arquivos CSS, Imagens etc. Ele faz apenas a parte de JS. O Webpack possui a funcionalidade _loaders_ que mostra ao JS como importar arquivos diferentes de arquivos JS.**
   * **Live Reload com Webpack Dev Server. Toda vez que uma alteração for feita, o servidor reinicia automaticamente (semelhante à funcionalidade do Nodemon).**
+
+## Configurando uma aplicação ReactJS
+
+### Configurando o Babel
+
+Vamos seguir a seguinte estrutura de arquivos para esta aplicação logo após o comando `yarn init -y`:
+
+```
+- ReactJSProjectFolder
+  - public
+    - index.html
+  - src
+    - index.js
+  - package.json
+```
+
+
+Como dito antes, o ReactJS é composto pelo _react_  e _react-dom_ (integração com a árvore de elementos), portanto, para iniciar uma aplicação ReactJS, podemos começar instalando as dependências `react` e `react-dom` com o terminal usando `yarn add react react-dom`.
+
+No arquivo `index.html`, além da estrutuar padrão do HTML 5, inserimos uma `div` com o atributo **id="app"**.
+
+Caso nossos arquivos JavaScript que escrevemos em React fossem importados para o `index.html` a aplicação não iria funcionar, pois o código react não é legível ao navegador. **A importância de usar o Babel é que ele converte (transpilar - converter um código em um outro código) código do React para um código que o browser entenda.**
+
+Usamos junto com o Babel o Webpack. Para cada tipo de arquivo (JS, CSS, Imagem) é necessária uma conversão diferente, e cada conversão dessa é gerenciada pelos **loaders**.
+
+Usamos vários loaders (Todo pacote com o sufixo _-loader_ é um pacote utilizado pelo Webpack), dentre eles:
+
+* babel-loader
+* css-loader
+* image-loader
+
+Dito isso, podemos inserir no terminal  `yarn add @babel/core @babel/cli @babel/preset-env @babel/preset-react webpack webpack-cli` para instalar as dependências necessárias.
+
+Para setar as configurações relacionadas ao babel na raiz criamos o arquivo **babel.config.js** (Pode acessar a documentação [aqui](https://babeljs.io/docs/en/)) desse jeito:
+
+```javascript
+module.exports = {
+    presets: [
+        '@babel/preset-env',
+        '@babel/preset-react'
+    ],
+}
+```
+
+* presets: conjuntos de configurações criadas por terceiros que podem ser reutilizadas na aplicação
+  * **@babel/preset-env**: converte o código do JS moderno para um JS mais antigo baseado no ambiente da aplicação. Ele converte apenas as funconalidades que os browsers não entendem. Também é possível usar o preset-env no NodeJS, que já tem suporte para várias funcionalidades do JS moderno. Porém, ele converte no que o node ainda não entende. O seu valor Default usa as 3/4 últimas versões dos Browsers como referência para conversão.
+  * **@babel/preset-react**: Adiciona as funcionalidades do react na conversão (Adicionar HTML dentro do JS).
+
+Para testar a conversão, podemos executar no terminal `yarn babel src/index.js --out-file public/bundle.js`. Essa linha basicamente pega o `arquivo index.js` que está na pasta src e converte todo o código dele para outro código que o browser entenda, e salva o novo código em `public/bundle.js`. O nome do arquivo `bundle.js` é padrão!
+
+Feito isso, no arquivo `index.html` podemos importar o `bundle.js` com a tag `<script src="bundle.js"></script>`
