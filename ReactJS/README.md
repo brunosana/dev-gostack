@@ -7,7 +7,9 @@
 * Vantagens do React
 * Babel/Webpack | OBS
 * Configurando uma aplicação ReactJS
+* Pilares do React
 * Componentização
+* Propriedades
 
 ## React
 
@@ -183,6 +185,12 @@ devServer: {
 
 Podemos então executar o servidor usando `yarn webpack-dev-server --mode development` para conseguir alterar e verificar as alterações em tempo real.
 
+---
+
+# Pilares do React
+
+Para construir qualquer aplicação em React, é necessário entender sobre os 3 pilares em que o React é estruturado: **Componentização**, **Propriedade** e **Estado**.
+
 ## Componentização
 
 > Componentização é o método de dividir partes da sua aplicação em componentes. Um conjunto isolado de HTML, CSS e JS que consegue ser reaproveitado quantas vezes for necessário na aplicação
@@ -237,3 +245,107 @@ O método render exporta apenas uma tag, embora seja possível inserir tags filh
 ```
 
 Dessa forma, conseguimos retornar um container com várias TAGs sem atrapalhar o código.
+
+## Propriedades
+
+> Propriedades são informações que podem ser passadas de um componente PAI para um componente FILHO.
+
+Suponha que na aplicação React que construímos, ao invés de escrever um "Hello World" inserirmos uma informação personalizada. Um título personalizado.
+
+Para isso basta apenas passar o valor como uma propriedade normal na Tag.
+
+Vamos criar um novo componente em `src/components/Tag.js`:
+
+```javascript
+import React from 'react';
+import { render } from 'react-dom';
+function Tag(){
+    return <h1>Hello World</h1>
+}
+export default Tag;
+```
+
+No arquivo `App.js` adaptamos nosso código para importar o componente criado e imprimir ele duas vezes, pois será usado para exemplificar o conceito de propriedade:
+
+```javascript
+import React from 'react';
+import { render } from 'react-dom';
+import Tag from './components/Tag';
+function App(){
+  return (
+    <>
+    <Tag />
+    <Tag />
+    </>
+  );
+}
+export default App;
+```
+
+
+Para passarmos alguma propriedade do componente PAI (`App`) para o componente FILHO (`Tag`) usamos a mesma sintaxe ao declarar um atributo em HTML. Portanto, vamos criar um atributo `title` com valores diferentes em cada Tag:
+
+```javascript
+[...]
+  return (
+    <>
+    <Tag title="Hello World" />
+    <Tag title="I am a coder!" />
+    </>
+  );
+[...]
+```
+
+Para capturar esses valores na TAG filha, precisamos capturar todas as propriedades (`props`) passadas na função `Tag`. E para incluir uma variável dentro de uma tag HTML precisamos inserir os colchetes:
+
+```javascript
+[...]
+function Tag(props){
+    return <h1>{props.title}</h1>
+}
+[...]
+```
+
+Assim conseguimos passar a propriedade, recuperá-la como argumento de uma função e a inserindo no meio do HTML gerando resultados diferentes com o mesmo componente.
+
+Podemos passar quantas propriedades quisermos. Além disso, uma boa prática para otimizar a passagem de parâmetros é **usando a desestruturação capturando os valores desejados direto na declaração do argumento**:
+
+```javascript
+function Tag({ title }){
+  return <h1>{title}</h1>
+}
+```
+
+Existem casos onde as tags filhas também irão ter tags dentro delas. E precisamos inserir esse conteúdo na página.
+
+Para isso, usamos a propriedade que já vem no objeto `props` chamada `children`. Ex. Suponha que nosso componente `App` seja modificado de forma que o `return` contenha:
+
+```javascript
+return (
+  <>
+  <Tag title="Hello World" />
+  <Tag title="I am a Coder!">
+    <ul>
+      <li>The best work</li>
+      <li>The best networking</li>
+      <li>I am Happy</li>
+    </ul>
+  </Tag>
+  </>
+);
+```
+
+Para que possamos imprimir o seu conteúdo, chamamos o children junto com a desestruturação para capturar a variável title em `Tag.js`. E logo depois, imprimir o seu conteúdo:
+
+```javascript
+function Tag({title, children}){
+    return(
+        <>
+        <h1>{title}</h1>
+        {children}
+        </>
+    );
+}
+```
+
+Será possível observar o resultado com o seu servidor executando!
