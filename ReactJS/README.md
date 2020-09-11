@@ -7,6 +7,7 @@
 * Vantagens do React
 * Babel/Webpack | OBS
 * Configurando uma aplicação ReactJS
+* Componentização
 
 ## React
 
@@ -181,3 +182,58 @@ devServer: {
 * **contentBase**: caminho para o diretório com os arquivos públicos da aplicação.
 
 Podemos então executar o servidor usando `yarn webpack-dev-server --mode development` para conseguir alterar e verificar as alterações em tempo real.
+
+## Componentização
+
+> Componentização é o método de dividir partes da sua aplicação em componentes. Um conjunto isolado de HTML, CSS e JS que consegue ser reaproveitado quantas vezes for necessário na aplicação
+
+Todos os códigos gerados pelos componentes do React são indexados na `div` com id=_app_.
+
+Para começar a construir um componente, criamos um arquivo `src/App.js`. **Por padrão, todo componente do React precisa ser escrito com a primeira letra maiúscula.** Um componente no React é sempre uma função:
+
+```javascript
+import React from 'react';
+import { render } from 'react-dom';
+
+function App(){
+  return <h1>Hello World</h1>;
+}
+
+export default App;
+```
+
+1. Primeiro importamos os packages e métodos que iremos utilizar para construção do componente, o `React` e o `Render` (do `react-dom`).
+2. Criamos a função APP e retornamos a tag HTML para escrever um _Hello World_ na tela.
+3. Usamos o `export default App` para exportar o componente.
+
+Feito isso, criamos o nosso primeiro componente React. Podemos usá-lo em outros arquivos como uma TAG.
+
+Podemos então usar o componente `App` no `index.js`:
+
+```javascript
+import React from 'react';
+import { render } from 'react-dom';
+
+import App from './App';
+
+render(<App />, document.getElementById('app'));
+```
+
+1. Primeiro importamos os packages e métodos que iremos utilizar para construção do componente, o `React` e o `Render` (do `react-dom`).
+2. Importamos o componente APP (`./` pois o arquivo `App.js` está na pasta src).
+3. Chamamos o método render (onde podemos escrever código HTML dentro do JS). No exemplo dado, usamos a tag `<App />` (Nossa TAG personalizada. O nome dela é o nome da variável que importamos junto com o pomponente. Como importamos com o mesmo nome do arquivo, usamos então `<App />`) na `div` com com id=_app_.
+
+Como tudo no React é um componente, é conveniente criar uma pasta `componentes` em `src` para alocar todos eles, deixando o código mais organizado.
+
+O método render exporta apenas uma tag, embora seja possível inserir tags filhas (Ex. `<div>[... conteúdo ...]</div>`), quando usadas em um projeto grande, o HTML final ficará lotado de DIVs desnecessárias indo contra às boas regras de programação e até atrapalhando a estilização. **A melhor opção para retornar múltiplas tags usando o render é com o conceito de FRAGMENT**, que são tags vazias:
+
+```html
+<>
+  <header>
+    <h1>Hello World</h1>
+    <h3>I am a coder</h3>
+  </header>
+</>
+```
+
+Dessa forma, conseguimos retornar um container com várias TAGs sem atrapalhar o código.

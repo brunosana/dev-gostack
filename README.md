@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Front-end com ReactJS</span>
 
-<span style="color:darkblue;">- Aula: Componentização</span>
+<span style="color:darkblue;">- Aula: Propriedades</span>
 
 ## Desafios
 
