@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Front-end com ReactJS</span>
 
-<span style="color:darkblue;">- Aula: Importando CSS e imagens</span>
+<span style="color:darkblue;">- Aula: Listando Projetos da API</span>
 
 ## Desafios
 

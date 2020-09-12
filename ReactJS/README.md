@@ -186,6 +186,17 @@ devServer: {
 
 Podemos então executar o servidor usando `yarn webpack-dev-server --mode development` para conseguir alterar e verificar as alterações em tempo real.
 
+Para otimizar o processo, podemos inserir dois scripts em `package.json`:
+
+```JSON
+"scripts": {
+  "dev": "webpack-dev-server --mode development",
+  "build": "webpack --mode production"
+}
+```
+
+Agora, para abrir o servidor basta apenas inserir `yarn dev`!
+
 ---
 
 # Pilares do React
@@ -429,3 +440,75 @@ Então, para recriar o projeto passamos o novo array com o *spread operator*:
 setProjects([...projects, `Projeto ${Date.now()}`]);
 ```
 **A variável projects não é alterada, é feita a recriação do array, com os valores que já estão nele e o novo elemento.**
+
+## Importando CSS e Imagens
+
+Como dito anteriormente, para converter arquivos Javascript moderno que usamos no React para um mais robusto que funcione nos navegadores, usamos um loader. Para usar CSS e Imagens no React, também precisamos de loaders para eles.
+
+Antes de inserimos a regra (em `rules`) vamos instalar duas dependências com `yarn add style-loader css-loader file-loader`.
+
+Então iremos adicionar uma regra no `webpack.config.js`, para arquivo que termina com `.CSS`:
+
+```javascript
+{
+    test: /\.css$/,
+    exclude: /node_modules/,
+    use: [
+        { loader: 'style-loader' },
+        { loader: 'css-loader' }
+    ]
+}
+```
+
+Precisamos de dois loaders porque:
+
+1. **css-loader**: Ler o arquivo css, busca e interpreta as importações (pois também podemos importar imagens no CSS). 
+2. **style-loader**: Captura o css interpretado pelo _css-loader_ e injeta dentro do HTML.
+
+Podemos então criar um arquivo `src/App.css` e estilizar as tags:
+
+```css
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+body {
+    background: #f5f5f5;
+    font: 14px sans-serif;
+    color: #333;
+}
+```
+
+Com o arquivo criado basta apenas inserir a linha `import './App.css';` em `App.js` e o Webpack se encarrega de fazer todo o trabalho de ler o CSS e inserir no HTML.
+
+O file-loader será utilizado para carregar arquivos para a nossa aplicação, podemos então salvar uma imagem qualquer (Ex. `src/assets/image.jpg`). É uma boa prática criar uma pasta `assets` para melhor organização.
+
+Precisamos também adicionar ele nas `rules` em `webpack.config.js`:
+
+```javascript
+{
+    test: /.*\.(gif|png|jpe?g)$/i,
+    use: {loader: 'file-loader'}
+}
+```
+
+1. test: A expressão regular para a imagem
+  1. .* = qualquer coisa
+  2. \. = ponto literal (sem a contrabarra significa qualquer coisa)
+  3. (gif|png|jpe?g) = gif ou png ou jpg ou jpeg
+    * A interrogação depois do _e_ significa que o caractere anterior é opcional.
+    * A barra vertical (|) significa _ou_
+  4. $ = Não tem mais caracteres depois
+  5. i = O _i_ no final significa que a expressão é case insensitive, ou seja, não faz distinção entre letras maiúsculas ou minúsculas.
+
+Com a imagem salva, basta apenas importar a imagem e usar ela em uma tag por exemplo:
+
+```javascript
+import image = './assets/image.jpg';
+[...]
+
+//Dentro do return...
+<img src={image} />
+```
