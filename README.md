@@ -6,10 +6,11 @@
 
 <span style="color:orange;">- Nível:  1</span>
 
-<span style="color:red;">- Módulo:  Front-end com ReactJS</span>
+<span style="color:red;">- Módulo:  Mobile com React Native</span>
 
-<span style="color:darkblue;">- Aula: Cadastrando Projetos</span>
+<span style="color:darkblue;">- Aula: Arquitetura React Native</span>
 
 ## Desafios
 
 * [Desafio01](https://github.com/brunosana/rocketseat-gostack-desafio01) concluído
+* [Desafio02](https://github.com/brunosana/rocketseat-gostack-desafio02) concluído

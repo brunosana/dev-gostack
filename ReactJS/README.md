@@ -13,6 +13,7 @@
 * Estado e Imutabilidade
 * Importando CSS e Imagens
 * Listando projetos da API
+* Cadastrando Projetos na API
 
 ## React
 
@@ -601,3 +602,28 @@ export default App;
 ```
 
 Foi necessário modificar a tag `<li>`, pois como agora recebemos um objeto e não string, agora imprimimos o título, e a key será o ID.
+
+## Cadastrando Projetos na API
+
+Alteramos a função `handleAddProject` para:
+
+```javascript
+  async function handleAddProject(){
+    const response = await api.post('/projects', {
+      title: `New Project Created ${Date.now()}`,
+      desc: "This description"
+    });
+    const project = response.data;
+    setProjects([...projects, project]);
+  }
+```
+
+Usamos ela de forma assíncrona pois as requisições levam tempo para ser processadas (ainda que pouco). E ainda temos um problema, o `@babel/preset-env` não entende funções assíncronas. Para isso, precisamos instalar outra dependência de desenvolvimento com `yarn add @babel/plugin-transform-runtime -D`.
+
+E adicionamos a propriedade plugin no `babel.config.js`:
+
+```javascript
+plugins: [
+    '@babel/plugin-transform-runtime'
+]
+```
