@@ -10,6 +10,7 @@
 * Pilares do React
 * Componentização
 * Propriedades
+* Estado e Imutabilidade
 
 ## React
 
@@ -349,3 +350,82 @@ function Tag({title, children}){
 ```
 
 Será possível observar o resultado com o seu servidor executando!
+
+## Estado e Imutabilidade
+
+> Estado e Imutabilidade são conceitos aplicados no React para garantir performance mesmo em aplicações com muitos dados
+
+Suponha que você tenha um array *projects* e queira exibir na página, usamos:
+
+```javascript
+function App(){
+    const projects = ['DoneList', 'SteamStoreBR'];
+    return(
+        <>
+        <Head title="HomeSana"/>
+        <ul>
+            {projects.map(project => <li key={project}>{project}</li>)}
+        </ul>
+        </>
+    );
+}
+export default App;
+```
+
+Mapeamos cada elemento para a tag *li* que criamos dentro da tag *ul*. Funciona perfeitamente. Usamos o parâmetro **key** como ID para o React, que é a chave de registro único de cada elemento toda vez que temos um laço de repetição gerando código HTML.
+
+Porém, caso você tenha um botão *Add Projeto*, para adicionar um projeto ao array, precisamos de uma função que insira o dado. Como estamos usando React, a declaração da função na tag button é bem simples, confira:
+
+```javascript
+function App(){
+    const projects = ['DoneList', 'SteamStoreBR'];
+    function handleAddProject(){
+        projects.push(`Projeto ${Date.now()}`);
+        console.log(projects);
+    }
+    return(
+        <>
+        <Head title="HomeSana"/>
+        <ul>
+            {projects.map(project => <li key={project}>{project}</li>)}
+        </ul>
+        <button type="button" onClick={handleAddProject} >Add Projeto</button>
+        </>
+    );
+}
+export default App;
+```
+
+Dessa forma, com o *console.log(projects)* garantimos que o elemento está sendo adicionado, porém, não é atualizado na página. Para fazer a mudança em tempo real, usamos o conceito de **estado**.
+
+### Como usar o estado e Imutabilidade:
+
+Agora, após importar o React na primeira linha, importamos por desestruturação o *useState* (Prefixo 'use' diz respeito a uma api que o React implementou onde conseguimos criar estados, antigamente eram classes). `import React, { useState } from 'react';`
+
+Agora precisamos transformar o array *projects* em um estado, declarando o array com a função *useState*:
+
+```javascript
+const projects = useState(['DoneList', 'SteamStoreBR']);
+```
+
+A função useState retorna um array com dois elementos:
+
+1. Variável com o valor inicial (Retorna o próprio array passado)
+2. Função para atualizar o valor
+
+Então, para otimizar o trabalho, desestruturamos o seu retorno:
+
+```javascript
+const [projects, setProjects] = useState(['DoneList', 'SteamStoreBR']);
+```
+
+E para atualizar na página HTML, usamos a função *setProjects* por meio da **imutabilidade**.
+
+**Imutabilidade - Não é possível alterar o formato da variável (alterar, excluir) de maneira direta, ou seja, o que precisamos fazer é recriar a variável com todos os seus elementos. O método push() não respeita a imutabilidade, pois altera o valor original do array. Sempre que um método altera o valor original de um objeto, no react ele deve ser evitado. Nós sempre criamos um novo array.**
+
+Então, para recriar o projeto passamos o novo array com o *spread operator*:
+
+```javascript
+setProjects([...projects, `Projeto ${Date.now()}`]);
+```
+**A variável projects não é alterada, é feita a recriação do array, com os valores que já estão nele e o novo elemento.**

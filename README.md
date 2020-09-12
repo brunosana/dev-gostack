@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Front-end com ReactJS</span>
 
-<span style="color:darkblue;">- Aula: Estado e Imutabilidade</span>
+<span style="color:darkblue;">- Aula: Importando CSS e imagens</span>
 
 ## Desafios
 
