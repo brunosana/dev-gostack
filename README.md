@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Mobile com React Native</span>
 
-<span style="color:darkblue;">- Aula: Listando projetos da API</span>
+<span style="color:darkblue;">- Aula: Criando novos projetos</span>
 
 ## Desafios
 

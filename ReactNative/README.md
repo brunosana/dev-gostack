@@ -7,6 +7,7 @@
 * Expo
 * Criando Projeto React Native
 * Diferenças do ReactJS
+* Listando Projetos da API
 
 ## React Native
 
@@ -132,3 +133,67 @@ const styles = StyleSheet.create({
     }
 })
 ```
+
+## Listando Projetos da API
+
+Não há diferenças entre ReactJS e React Native na parte de conexão, entretanto há diferenças entre o dispositivo físico do IOS/Android e Emulador IOS/Android. Para garantir a funcionalidade em todos usaremos o IP da máquina. Então podemos começar instalando também o axios com `yarn add axios` e criando o arquivo `src/services/api.js`:
+
+```javacsript
+import axios from 'axios';
+const api = axios.create({
+    baseURL: 'http://192.168.0.14'
+})
+export default api;
+```
+
+Nosso arquivo `src/index.js` ficará:
+
+```javascript
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, FlatList, Text, StyleSheet, StatusBar } from 'react-native';
+import api from './services/api';
+export default function App(){
+    const [projects, setProjects] = useState([]);
+
+    useEffect(()=>{
+        api.get('/projects').then(response=>{
+            setProjects(response.data);
+            console.log(response.data);
+        })
+    }, [])
+    return (
+        <>
+        <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+        <SafeAreaView style={styles.container}>
+        <FlatList
+            data={projects}
+            keyExtractor={project => project.id}
+            renderItem={({ item: project })=>(
+                <Text style={styles.project}>{project.title}</Text>
+            )}
+        />
+        </SafeAreaView>
+        </>
+    );
+}
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#7159c1'
+    },
+    project: {
+        color: '#FFF',
+        fontSize: 20,
+        fontWeight: 'bold',
+    }
+})
+```
+
+* Não importamos mais a `View` pois agora usamos a `SafeAreaView`. Pois como estamos trabalhando com vários dados ela enquadra na safe.
+* Usamos a tag FlatList pois ela é muito performatica que gerar vários view. E quando a quantidade de projetos impressa passa da tela ela cria um scrow
+
+Sobre os parâmetros da FlatList:
+
+* **data** -> Variável onde estão alocados os items que vão ser impressos.
+* **keyExtractor** -> Propriedade da variável única que entrará no parânetro `key` da tag PAI em cada item repetido.
+* **renderItem** -> É o que irá ser renderizado por Item. No caso, os parâmetros que a função envia são vários (Como se o item a ser impresso é impar, se é o primeiro, último etc), portanto usamos a desestruturação para capturar apenas o parâmetro Item e usamos um recurso do JS para renomear a variável para project.
