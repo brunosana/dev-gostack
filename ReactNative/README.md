@@ -5,6 +5,8 @@
 * React Native
 * Arquitetura React Native
 * Expo
+* Criando Projeto React Native
+* Diferenças do ReactJS
 
 ## React Native
 
@@ -81,4 +83,52 @@ Agora para consertar o erro da aplicação com o arquivo excluído, trocamos a i
 
 ```javavscript
 import App from './src';
+```
+
+## Diferenças do ReactJS
+
+> Os elementos e a estilização são diferentes no ReactJS e no React Native.
+
+Como não vamos usar HTML não usamos tags como `<div>`, `<h1>` etc. Usamos tags exportadas do package `react-native`, como a `<View>` que é um tipo de container, que pode ser usado no lugar de `div`, `footer`, `header`, `section` etc.
+
+Não possuem valor semântico (significado). Ex. No HTML a tag `footer` é um rodapé, no React-Native nenhum elemento tem significado, são usados de forma abstrata. Então da mesma forma, a tag do React-Native `<Text>` funciona semelhante ao span, strong `h1`, `h2`, `h3`, `p` etc.
+
+Não possuem estilização própria. Ex. uma tag H1 fica em negrito, cor preta geralmente etc. H2, H3, P etc. Em React-Native precisamos da estilização.
+
+A parte do CSS é feita dentro do JavaScript como código javascript
+
+**OBS: TODOS OS ELEMENTOS POR PADRÃO POSSUEM `display: flex`**
+
+NÃO HÁ HERANÇA DE ESTILOS NO REACT-NATIVE. Em um container tas TAGs filhas não irão receber modificações, portanto:
+
+Também podemos alterar propriedades da statusbar (a barra de cima).
+
+Ex. Em src/index.js importe além da View, o Text, o StyleSheet e o StatusBar:
+
+```javascript
+import React from 'react';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
+export default function App(){
+    return (
+        <>
+        <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+        <View style={styles.container}>
+            <Text style={styles.title} >Hello World</Text>
+        </View>
+        </>
+    );
+}
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#7159c1',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title: {
+        color: '#FFF',
+        fontSize: 20,
+        fontWeight: 'bold',
+    }
+})
 ```
