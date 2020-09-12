@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Mobile com React Native</span>
 
-<span style="color:darkblue;">- Aula: Criando Novo Projeto</span>
+<span style="color:darkblue;">- Aula: Diferenças do ReactJS</span>
 
 ## Desafios
 

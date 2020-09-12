@@ -29,3 +29,56 @@
 * SDK com um conjunto de funcionalidades prontas para usar no ReactNative (Camera, Video, Interação com Facebook, Google etc)
 * Não é necessário configurar emulador, instalamos o Expo na plataforma e ele interpreta o código.
 * **Não é viável** pois não é possível mexer no código nativo, e com isso várias bibliotecas não tem suporte ao Expo. Portanto, não vale a pena o seu Uso.
+
+## Criando Projeto React Native
+
+Para configurar sua máquina (Seja com emulador ou dispositivo físico) só seguir os passos [desse link](https://react-native.rocketseat.dev/)
+
+Para criar um projeto React Native, basta inserir `react-native init NOME_DO_PROJETO` no terminal.
+
+Irá gerar uma estrutura de pastas:
+
+```
+- react-native-project-folder
+  - _tests_
+  - android
+  - ios
+  - node_nodules
+  - .buckconfig
+  - .flowconfig
+  - .gitattributes
+  - .gitignore
+  - .wachmanconfig
+  - app.json
+  - babel.config.js
+  - index.js
+  - metro.config.js
+  - package.json
+```
+
+Pode dar erro ao rodar o app no dispositivo físico, caso o erro seja `react native Could not determine the dependencies of task ':app:installDebug'` e/ou `SDK location not found. Define location with an ANDROID_SDK_ROOT environment variable or by setting the sdk.dir path in your project's local properties file at`, siga os passos abaixo:
+
+1. Na pasta `android` do projeto crie um arquivo `local.properties`
+2. Se for linux/mac, insira: `sdk.dir = /Users/USUARIO/Library/Android/sdk`
+  * Se for Windows, insira: `sdk.dir = C:/Users/USUARIO/AppData/Local/Android/sdk`
+
+Agora basta executar `npm start` em um terminal e `react-native run-android` em outro terminal (Na pasta do projeto).
+
+---
+
+**Por boas práticas de programação. Excluimos o arquivo `App.js` e criamos um arquivo em `src/index.js` contendo:
+
+```javascript
+import React from 'react';
+import { View } from 'react-native';
+
+export default function App(){
+    return <View />;
+}
+```
+
+Agora para consertar o erro da aplicação com o arquivo excluído, trocamos a importação do arquivo `index.js` na raiz do projeto:
+
+```javavscript
+import App from './src';
+```
