@@ -8,6 +8,7 @@
 * Criando Projeto React Native
 * Diferenças do ReactJS
 * Listando Projetos da API
+* Criando novos projetos
 
 ## React Native
 
@@ -197,3 +198,55 @@ Sobre os parâmetros da FlatList:
 * **data** -> Variável onde estão alocados os items que vão ser impressos.
 * **keyExtractor** -> Propriedade da variável única que entrará no parânetro `key` da tag PAI em cada item repetido.
 * **renderItem** -> É o que irá ser renderizado por Item. No caso, os parâmetros que a função envia são vários (Como se o item a ser impresso é impar, se é o primeiro, último etc), portanto usamos a desestruturação para capturar apenas o parâmetro Item e usamos um recurso do JS para renomear a variável para project.
+
+## Criando novos projetos
+
+Para criar um novo projeto, usaremos a mesma função do ReactJS:
+
+```javascript
+async function handleAdProject(){
+    const response = await api.post('/projects', {
+        title: `Projeto Novo ${Date.now()}`,
+        desc: 'another desc'
+    });
+    setProjects([...projects, response.data])
+}
+```
+
+Para adicionar um botão, importamos junto a `View`, `Flatlist` e `Text` o `TouchableOpacity`, poderíamos usar o `Button` mas ele já vem com estilização própria.
+
+Portanto, abaixo da Flatlist inserimos:
+
+```javascript
+<TouchableOpacity
+activeOpacity={0.6}
+style={styles.button}
+onPress={handleAdProject}
+>
+    <Text style={styles.buttonText}>Adicionar Projeto</Text>
+</TouchableOpacity>
+```
+
+Propriedades:
+
+* **activeOpacity**: Essa tag cria um botão que ao clicar reduz a sua opacidade, estamos controlando para quando ele for ativado sua opacidade ficar em 60%
+* **style**: estilo aplicado
+* **onPress**: Não temos a propriedade `onClick` no React-Native, usamos no lugar a `onPress`.
+* Dentro da Tag inserimos um texto
+
+Quanto aos estilos, adicionamos os dois novos:
+
+```javascript
+button:{
+    backgroundColor: '#FFF',
+    margin: 20,
+    height: 50,
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
+},
+buttonText: {
+    fontWeight: 'bold',
+    fontSize: 16
+}
+```

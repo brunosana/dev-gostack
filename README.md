@@ -6,11 +6,12 @@
 
 <span style="color:orange;">- Nível:  1</span>
 
-<span style="color:red;">- Módulo:  Mobile com React Native</span>
+<span style="color:red;">- Módulo:  Typescript</span>
 
-<span style="color:darkblue;">- Aula: Criando novos projetos</span>
+<span style="color:darkblue;">- Aula: Por que Typescript?</span>
 
 ## Desafios
 
 * [Desafio01](https://github.com/brunosana/rocketseat-gostack-desafio01) concluído
 * [Desafio02](https://github.com/brunosana/rocketseat-gostack-desafio02) concluído
+* [Desafio03](https://github.com/brunosana/rocketseat-gostack-desafio03) concluído
