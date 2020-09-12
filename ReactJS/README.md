@@ -11,6 +11,8 @@
 * Componentização
 * Propriedades
 * Estado e Imutabilidade
+* Importando CSS e Imagens
+* Listando projetos da API
 
 ## React
 
@@ -512,3 +514,90 @@ import image = './assets/image.jpg';
 //Dentro do return...
 <img src={image} />
 ```
+
+## Listando projetos da API
+
+Vamos listar os projetos da API criada no módulo anterior (A API precisa estar rodando OK?).
+
+### Cors
+
+Para evitar que nosso Back-end trabalhe com front-ends não autorizados. Precisamos então usar o Cors para dar acesso ao nosso front-end:
+
+Na pasta do Back-End, primeiro instalamos o cors com `yarn add cors`
+
+Dentro do index.js inserimos duas linhas:
+
+```javascript
+const cors=require('cors');
+[...]
+app.use(cors());
+```
+
+Assim nós permitimos que qualquer front-end se comunique com o Back-end. Para produção esse detalhe será alterado!
+
+---
+
+**Voltando à listagem...**
+
+Precisamos instalar uma dependência com `yarn add axios`.
+
+O Axios será responsável por fazer chamadas à API do Front-End ao Back-End.
+
+Por boas práticas de programação, criamos um arquivo em `src/services/api.js`. Será nesse arquivo que iremos se comunicar com o Back-End.
+
+A pasta _service_ irá armazenar os arquivos que tem qualquer comunicação com serviços externos. O arquivo `api.js` será:
+
+```javascript
+import axios from 'axios';
+const api = axios.create({
+    baseURL: 'http://localhost:8080'
+});
+export default api;
+```
+
+Com esses dados já conseguimos nos conectar com a API. Podemos então trabalhar no `App.js`.
+
+Veja bem, o vetor com os projetos precisa ser carregado quando o componente for chamado. E para fazer isso, precisamos importar uma função do react chamada `useEffect`:
+
+```javascript
+import React, { useState, useEffect } from 'react';
+```
+
+É utilizada para disparar funções sempre que alguma informação for alterada ou não (quando o componente for exibido em tela).
+
+Podemos então usar o método na função `App` passando dois parâmetros:
+
+1. A função a ser disparada
+2. Quando disparar (Toda vez que a variável projects fosse alterada, ou apenas uma vez etc. É conhecido como array de dependências). Incluímos geralmnte as variáveis que usamos dentro do primeiro argumento.
+
+Então:
+
+```javascript
+import React, { useState, useEffect } from 'react';
+import api from './services/api'
+import './App.css';
+import Tag from './components/Tag';
+function App(){
+  const [projects, setProjects] = useState([]);
+  useEffect(()=>{
+    api.get('/projects').then(response => {
+      setProjects(response.data);
+    })
+  }, []);
+  function handleAddProject(){
+    setProjects([...projects, `Novo Projeto ${Date.now()}`]);
+  }
+  return (
+    <>
+      <Tag title="Projects" />
+      <ul>
+        {projects.map(project => <li key={project.id}>{project.title}</li>)}
+      </ul>
+      <button type="button" onClick={handleAddProject}>Adicionar Projeto</button>
+    </>
+  );
+}
+export default App;
+```
+
+Foi necessário modificar a tag `<li>`, pois como agora recebemos um objeto e não string, agora imprimimos o título, e a key será o ID.

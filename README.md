@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Front-end com ReactJS</span>
 
-<span style="color:darkblue;">- Aula: Listando Projetos da API</span>
+<span style="color:darkblue;">- Aula: Cadastrando Projetos</span>
 
 ## Desafios
 
