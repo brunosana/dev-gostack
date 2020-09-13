@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Typescript</span>
 
-<span style="color:darkblue;">- Aula: Configurando o Projeto</span>
+<span style="color:darkblue;">- Aula: Quando adicionar tipos</span>
 
 ## Desafios
 
