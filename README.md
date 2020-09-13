@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Typescript</span>
 
-<span style="color:darkblue;">- Aula: Quando adicionar tipos</span>
+<span style="color:darkblue;">- Aula: Tipando objetos e vetores</span>
 
 ## Desafios
 

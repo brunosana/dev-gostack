@@ -4,6 +4,7 @@
 
 * Por que Typescript?
 * Configurando o Projeto
+* Quando adicionar tipos
 
 ## Por que Typescript?
 
@@ -57,3 +58,40 @@ Portanto, para inicializar o typescript no repositório usamos `yarn tsc --init`
 Inserimos no terminal `yarn tsc` para gerar um arquivo `.js` podemos usar o `node src/index.js` para executar a API.
 
 Por boas práticas de programação, os arquivos da pasta `src` são para desenvolvimento, então é bom usar uma pasta específica para armazenar os arquivos `.js`. Para isso, no arquivo `tsconfig.json` descomentamos a linha `outDir` (por volta da linha 17) e mudamos o seu valor para `./dist`. Assim, toda vez que o comando `yarn tsc` for usado, todos os arquivos (incluindo a sua estrutura de pastas) serão convertidos e armazenados na pasta `dist`.
+
+## Quando adicionar tipos
+
+Suponha que na API temos uma arquivo `src/routes.ts` e que o corpo dele seja:
+
+```typescript
+export function serverWorking(request, response){
+    return response.json({message: "Server Working"});
+}
+```
+
+E modificamos o arquivo `src/index.ts` para:
+
+```typescript
+[...]
+import { serverWorking } from './routes';
+[...]
+app.get('/', serverWorking);
+[...]
+```
+
+Podemos ver que no arquivo `routes` as variaveis `request` e `response` ficam sublinhadas em vermelho, pois o editor não reconhece a tipagem daquelas variáveis. Portanto, caso algum colaborador precise ou queira alterar o código ele não irá saber, até você mesmo daqui a algum tempo pode esquecer.
+
+Para adicionar tipagem é simples. Todo pacote instalado é possível importar apenas as tipagens.
+
+Por tanto, importamos elas e usamos no arquivo `routes`:
+
+```typescript
+import { Request, Response } from 'express';
+export function serverWorking(request: Request, response: Response){
+    return response.json({message: "Server Working"});
+}
+```
+
+Desse jeito o editor irá conseguir reconhecer com a IntelliSense.
+
+O próprio editor avisa quando for preciso usar a tipagem.
