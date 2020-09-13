@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Typescript</span>
 
-<span style="color:darkblue;">- Aula: Por que Typescript?</span>
+<span style="color:darkblue;">- Aula: Configurando o Projeto</span>
 
 ## Desafios
 
