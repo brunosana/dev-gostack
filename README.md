@@ -4,11 +4,11 @@
 
 ## Status
 
-<span style="color:orange;">- Nível:  1</span>
+<span style="color:orange;">- Nível:  2</span>
 
-<span style="color:red;">- Módulo:  Typescript</span>
+<span style="color:red;">- Módulo:  Primero Projeto com Node.JS</span>
 
-<span style="color:darkblue;">- Aula: Tipando objetos e vetores</span>
+<span style="color:darkblue;">- Aula: Configurando a Estrutura</span>
 
 ## Desafios
 

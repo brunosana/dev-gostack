@@ -5,6 +5,7 @@
 * Por que Typescript?
 * Configurando o Projeto
 * Quando adicionar tipos
+* Criando tipagens
 
 ## Por que Typescript?
 
@@ -95,3 +96,90 @@ export function serverWorking(request: Request, response: Response){
 Desse jeito o editor irá conseguir reconhecer com a IntelliSense.
 
 O próprio editor avisa quando for preciso usar a tipagem.
+
+## Criando Tipagens
+
+Suponha a função createUser. Para esse exemplo, na criação de um usuário precisamos de um Nome, email e password, que podemos definir seus tipos como string. Como o Nome não será obrigatório para esse exemplo, caso não declarado será atribuida a string vazia pra ele e automaticamente o typescript reconhecerá seu tipo como string:
+
+```typescript
+export default function createUser(name = '', email: string, password: string){
+    const user = {name, email, password}
+    return user;
+}
+```
+
+Por boas práticas de programação, podemos receber no parâmetro o objeto usuário e desestruturá-lo:
+
+```typescript
+export default function createUser({name = '', email: string, password: string}){
+    const user = {name, email, password}
+    return user;
+}
+```
+
+Porém dessa forma, tipagem em Json seria o mesmo que mudar o valor da variável. Para isso, criamos um tipo para o objeto em uma variável separada!
+
+Sempre chamamos essa tipagem de interface. **Interface basicamente é como defiminos os tipos de conjuntos de informações, geralmente um objeto.**
+
+Definimos o objeto user (no mesmo arquivo da função) então:
+
+```typescript
+interface CreateUserData{
+    name?: string;
+    email: string;
+    password: string;
+}
+```
+
+**A interrogação na variável _name_ indica que o argumento é OPCIONAL!**
+
+Nossa função `createUser` ficará da seguinte forma:
+
+```typescript
+export default function createUser({name, email, password}: CreateUserData){
+    const user = {name, email, password}
+    return user;
+}
+```
+
+Em outros serviços onde essa função for invocada, a intellisense irá entender e autocompletar o código!
+
+### Tipagem em vetores
+
+Suponha que em uma função seja necessário passar um objeto contendo um Array de strings como parâmetro. A definição seria:
+
+```typescript
+interface ProfileData{
+    name?: string;
+    techs: Array<string>;
+}
+
+export default function createProfile({name, techs}: ProfileData){
+    const profile = {name, techs};
+    return profile;
+}
+```
+
+Também podemos definir o array como `string[]`.
+
+Suponha então que o array possa, além de receber string poderá também receber um objeto contendo o nome da tecnologia e a quantidade de projetos desenvolvidos nela. Precisamos então criar um novo tipo e atribuir ele à interface `ProfileData`:
+
+```typescript
+
+interface TechObject{
+    name: string;
+    projects: number;
+}
+
+interface ProfileData{
+    name?: string;
+    techs: Array<string | TechObject>;
+}
+
+export default function createProfile({name, techs}: ProfileData){
+    const profile = {name, techs};
+    return profile;
+}
+```
+
+Usamos o pipe (`|`) pois precisamos garantir que DOIS dados possam ser inseridos nele, OU uma string OU um TechObject. Serve para mais de dois tipos também!
