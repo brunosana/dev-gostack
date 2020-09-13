@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Primero Projeto com Node.JS</span>
 
-<span style="color:darkblue;">- Aula: Configurando a Estrutura</span>
+<span style="color:darkblue;">- Aula: Debugando NodeJS</span>
 
 ## Desafios
 
