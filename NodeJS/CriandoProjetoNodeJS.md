@@ -2,7 +2,7 @@
 
 1. `yarn init -y`
 2. `yarn add express`
-3. `yarn add typescript, @types/express -D`
+3. `yarn add typescript @types/express -D`
 4. `yarn tsc --init`
 5. Em `tsconfig.json`:
    1. rootDir: "./src"
