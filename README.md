@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
 
-<span style="color:darkblue;">- Aula: Estratégias de Abstração</span>
+<span style="color:darkblue;">- Aula: Criando container do banco</span>
 
 ## Desafios
 
