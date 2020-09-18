@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
 
-<span style="color:darkblue;">- Aula: Configurando TypeORM</span>
+<span style="color:darkblue;">- Aula: Criando tabela de agendamentos</span>
 
 ## Desafios
 
