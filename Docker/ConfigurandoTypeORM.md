@@ -46,6 +46,8 @@ E, ao rodar o `yarn dev:server`, ele pode retornar um erro caso a _database_ nã
 
 Setamos o nome como `gostack_gobarber` e confirmamos a criação, agora podemos verificar que a conexão será bem sucedida!
 
+PS: Caso ainda de erro com relação ao uuid (*Function uuid_generate_v4() does not exists*), vamos no DBeaver, no banco de dados. Botão Direito->Create->Extensions e lá em baixo temos a opção `uuid-ossp`, adicionamos e pronto
+
 ---
 
 ## Criando tabela de agendamento
