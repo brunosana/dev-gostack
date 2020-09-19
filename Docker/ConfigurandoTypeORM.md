@@ -5,6 +5,7 @@
 * Configurando o TypeORM
 * Criando tabela de agendamento
 * Criando model de agendamento
+* Repositório do TypeORM
 
 ## Configurando o TypeORM
 
@@ -52,6 +53,9 @@ Setamos o nome como `gostack_gobarber` e confirmamos a criação, agora podemos 
 Precisamos inserir o trecho no `ormconfig.json`:
 
 ```JSON
+"entities": [
+    "./src/models/*.ts"
+],
 "migrations": [
     "./src/database/migrations/*.ts"
 ],
@@ -95,6 +99,7 @@ public async up(queryRunner: QueryRunner): Promise<void> {
                     type: 'varchar',
                     isPrimary: true,
                     generationStrategy: 'uuid',
+                    default: 'uuid_generate_v4()',
                 },
                 {
                     name: 'provider',
@@ -119,6 +124,7 @@ public async down(queryRunner: QueryRunner): Promise<void> {
 Estamos criando uma tabela com 3 colunas, `id`, `provider` e `date`. No método `down` excluímos a tabela.
 
 PS: Na coluna `id` o campo generationStrategy é uma forma de automatizar a criação dos IDs ao serem inseridos no banco de dados.
+PS: Na coluna `id` o campo default recebe uma função que dentro do postgres ele gera o Universal Unique ID
 
 Para executar as migrations, usamos `yarn typeorm migration:run`. No DBeaver já é possível observar as tabelas em `gostack_gobarber/Schemas/public/Tables`.
 
@@ -178,3 +184,144 @@ Porém como agora estamos utilizando o construtor do TypeORM, ao não inicializa
 ```
 
 Agora não temos mais erros nas classes dos models. O Model já está pronto e precisamos apenas alterar o repositório para inserir de forma correta!
+
+## Repositório do TypeORM
+
+Por padrão, o TypeORM tem um repositório padrão com operações padrão que são feitas em um Banco de Dados (CRUD). Portanto, dentro do AppointmentsRepository.ts teremos:
+
+```typescript
+import { EntityRepository, Repository } from 'typeorm';
+import Appointment from '../models/Appointment';
+
+@EntityRepository(Appointment)
+class AppointmentsRepository extends Repository<Appointment> {
+    public async findByDate(date: Date): Promise<Appointment | null> {
+        const findAppointment = await this.findOne({
+            where: { date },
+        });
+        return findAppointment || null;
+    }
+}
+
+export default AppointmentsRepository;
+```
+
+* Importamos do TypeORM o `EntityRepository`e o `Repository`
+* Podemos retirar o array e o construtor, assim como o método `all`. Pois não iremos mais instanciar um vetor e o próprio repositório do TypeORM tem um método equivalente ao `all`.
+* Também podemos remover o método `Create`.
+* O único que irá sobrar será o `findByDate`, que é uma regra de negócio e será alterado posteriormente.
+* Removeremos também a interface `CreateAppointmentDTO`
+* Inserimos um decorator `EntityRepository` acima da classe, passando o Model como parâmetro.
+* Criamos uma herança com o `extends Repository`, passando o model como parâmetro, que é onde irá ter todos os métodos de conversa com o Banco de Dados.
+* Alteramos a função `findByDate`, usando o `this.findOne` passando no parametro `where` o `date`. Como será uma busca no banco de dados, **a função se tornou assíncrona e o seu retorno uma Promisse**, podendo retornar um Appointment ou Null.
+
+Podemos modificar o `CreateAppointmentServices` agora:
+
+```typescript
+import { startOfHour } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
+import Appointment from '../models/Appointment';
+import AppointmentsRepository from '../repositories/AppointmentsRepository';
+
+interface Request {
+    provider: string;
+    date: Date;
+}
+
+class CreateAppointmentService {
+    public async execute({ provider, date }: Request): Promise<Appointment> {
+        const appointmentsRepository = getCustomRepository(
+            AppointmentsRepository,
+        );
+
+        const appointmentDate = startOfHour(date);
+
+        const findAppointmentInSameDate = await appointmentsRepository.findByDate(
+            appointmentDate,
+        );
+
+        if (findAppointmentInSameDate) {
+            throw Error('This appointment is alredy booked');
+        }
+
+        const appointment = appointmentsRepository.create({
+            provider,
+            date: appointmentDate,
+        });
+
+        await appointmentsRepository.save(appointment);
+
+        return appointment;
+    }
+}
+
+export default CreateAppointmentService;
+```
+
+* Removemos a parte do construtor e declaração da variável e deixamos apenas a função `execute`
+* Importamos o método `getCustomRepository` do `typeorm`
+* Na função execute atribuímos à variável `appointmentsRepository` o método `getCustomRepository` passando como parâmetro o `AppointmentsRepository` importado no Service.
+* Podemos agora tirar o `this` de todas as declarações da variável `appointmentsRepository` pois a declaração está no escopo da função.
+* A variável `findAppointmentInSameDate` recebe uma promise, então inserimos o `await`
+* Há só uma pequena diferença no `create` do TypeORM. **Ele apenas cria a instância do objeto Appointment mas não salva no Banco de Dados**.
+* Para salvar usamos o método `save` logo após criar a instância
+* Como o registro será inserido no banco, usamos o `await`, transformando a função em assíncrona e o seu retorno uma Promise
+
+Com o service salvo, **precisamos agora alterar a Rota**, que será modificada para o Repositório do TypeORM.
+
+O arquivo `appointments.routes.ts` ficará:
+
+```typescript
+import { Router } from 'express';
+import { parseISO } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
+import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import CreateAppointmentService from '../services/CreateAppointmentService';
+
+const appointmentsRouter = Router();
+
+appointmentsRouter.post('/', async (request, response) => {
+    try {
+        const { provider, date } = request.body;
+
+        const parsedDate = parseISO(date);
+
+        const createAppointment = new CreateAppointmentService();
+
+        const appointment = await createAppointment.execute({
+            provider,
+            date: parsedDate,
+        });
+
+        return response.json(appointment);
+    } catch (err) {
+        return response.status(400).json({ error: err.message });
+    }
+});
+
+appointmentsRouter.get('/', async (request, response) => {
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+    const appointments = await appointmentsRepository.find();
+    return response.json(appointments);
+});
+
+export default appointmentsRouter;
+```
+
+* Removemos a variável `appointmentsRepository` do começo do arquivo para ser instanciado dentro das rotas.
+* Na rota do tipo GET, a varável `appointmentsRepository` agora recebe o método `getCustomRepository` recebendo como parâmetro o `AppointmentsRepository`, igual ao Service.
+* O método `all` foi substituído pelo método `find`
+* Como o método `find` é uma promise, inserimos antes o `await` e deixamos a função como Assíncrona
+* Na rota do tipo POST, precisamos remover os parâmetros do construtor do `CreateAppointmentService`, já que ele já tem os dados do Repository do TypeORM.
+* A função `execute` recebe o await por ser uma promise
+* A função que trata a rota agora é assíncrona
+
+O servidor ainda não está funcionando, pois quando o Typescript usa a sintaxe de decorators precisamos instalar uma dependência com `yarn add reflect-metadata`.
+
+Essa dependência precisa ser importada no primeiro arquivo da aplicação, no caso, o `server.ts`, inserimos:
+
+```javascript
+import 'reflect-metadata';
+```
+
+Agora podemos rodar o servidor com `yarn dev:server` e testar as rotas.

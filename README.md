@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
 
-<span style="color:darkblue;">- Aula: Repositório do TypeORM</span>
+<span style="color:darkblue;">- Aula: Model e migration de usuários</span>
 
 ## Desafios
 
