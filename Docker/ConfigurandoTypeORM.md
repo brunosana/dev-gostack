@@ -6,6 +6,7 @@
 * Criando tabela de agendamento
 * Criando model de agendamento
 * Repositório do TypeORM
+* CreatedAt e UptadetAd
 
 ## Configurando o TypeORM
 
@@ -327,3 +328,30 @@ import 'reflect-metadata';
 ```
 
 Agora podemos rodar o servidor com `yarn dev:server` e testar as rotas.
+
+## CreatedAt e UptadetAd
+
+Para os campos padrão de criação e alteração, nas migrations, inserimos:
+
+```typescript
+{
+    name: 'created_at',
+    type: 'timestamp',
+    default: 'now()',
+},
+{
+    name: 'updated_at',
+    type: 'timestamp',
+    default: 'now()',
+},
+```
+
+Nos Models, além de importar do typeorm o `CreateDateColumn` e `UpdateDateColumn`:
+
+```typescript
+@CreateDateColumn()
+createdAt: Date;
+
+@UpdateDateColumn()
+updatedAt: Date;
+```

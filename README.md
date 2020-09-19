@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
 
-<span style="color:darkblue;">- Aula: Model e migration de usuários</span>
+<span style="color:darkblue;">- Aula: Relacionamento nos Models</span>
 
 ## Desafios
 
