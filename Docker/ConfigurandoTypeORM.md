@@ -3,7 +3,8 @@
 ### Tópicos
 
 * Configurando o TypeORM
-* Crianto tabela de agendamento
+* Criando tabela de agendamento
+* Criando model de agendamento
 
 ## Configurando o TypeORM
 
@@ -125,4 +126,55 @@ Para executar as migrations, usamos `yarn typeorm migration:run`. No DBeaver já
 
 Caso cumprido o único requisito, podemos desfazer as migratons com `yarn typeorm migration:revert` e as tabelas serão excluídas, podemos alterar a migration e novamente executar `yarn typeorm migration:run`.
 
-Para ver as migrations que já foram executadas, podemos usar o `yarn typeorm migration:show`
+Para ver as migrations que já foram executadas, podemos usar o `yarn typeorm migration:show`.
+
+## Model de Agendamento
+
+Precisamos relacionar o model `Appointment.ts` com o banco de dados.
+
+Antes, no arquivo `tsconfig.json` precisamos habilitar a funcionalidade do Typescript chamada **decorators**.
+Com a notação `@`. Para isso, descomentamos as seguintes linhas:
+
+```JSON
+"experimentalDecorators": true,
+"emitDecoratorMetadata": true,
+```
+
+
+No model, importamos o `Entity`, uma entidade que irá ser salva no banco de dados:
+
+```typescript
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity('appointments')
+class Appointment {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @Column()
+    provider: string;
+
+    @Column('timestamp with time zone')
+    date: Date;
+}
+
+export default Appointment;
+```
+
+Decorator funciona como uma função, no caso do `@Entity('appointments')` **e enviará a classe como parâmetro** da função. O parâmetro dentro dos parênteses é o nome da tabela onde uma instância do model irá ser salvo.
+
+Os outros Decorators servem para informar o que são colunas do banco de dados e o que são apenas parâmetros da aplicação!
+
+O decorator `PrimaryGeneratedColumn` usamos para a chave primária, que, por definição, na migration, é gerada automaticamente, passando o 'uui' como parâmetro.
+
+O decorator `Column` sem parâmetros trata a variável como varchar, e o Date, informamos o mesmo tipo de dado, com 'timestamp with time zone'.
+
+PS: Com o decorator `Entity` inserido acima da classe, o construtor é criado de forma automática. Então podemos excluir o construtor e usar métodos específicos do TypeORM para criar instâncias do Model.
+
+Porém como agora estamos utilizando o construtor do TypeORM, ao não inicializar variáveis dos Models, o Typescript irá retornar um erro no model. Para isso, vamos no arquivo `tsconfig.json` e descomentamos a seguinte linha:
+
+```JSON
+"strictPropertyInitialization": false
+```
+
+Agora não temos mais erros nas classes dos models. O Model já está pronto e precisamos apenas alterar o repositório para inserir de forma correta!
