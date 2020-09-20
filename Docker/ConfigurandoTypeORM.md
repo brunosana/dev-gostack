@@ -127,7 +127,8 @@ public async down(queryRunner: QueryRunner): Promise<void> {
 Estamos criando uma tabela com 3 colunas, `id`, `provider` e `date`. No método `down` excluímos a tabela.
 
 PS: Na coluna `id` o campo generationStrategy é uma forma de automatizar a criação dos IDs ao serem inseridos no banco de dados.
-PS: Na coluna `id` o campo default recebe uma função que dentro do postgres ele gera o Universal Unique ID
+
+PS: Na coluna `id` o campo default recebe uma função que dentro do postgres ele gera o Universal Unique ID.
 
 Para executar as migrations, usamos `yarn typeorm migration:run`. No DBeaver já é possível observar as tabelas em `gostack_gobarber/Schemas/public/Tables`.
 
@@ -209,11 +210,11 @@ class AppointmentsRepository extends Repository<Appointment> {
 export default AppointmentsRepository;
 ```
 
-* Importamos do TypeORM o `EntityRepository`e o `Repository`
+* Importamos do TypeORM o `EntityRepository`e o `Repository`.
 * Podemos retirar o array e o construtor, assim como o método `all`. Pois não iremos mais instanciar um vetor e o próprio repositório do TypeORM tem um método equivalente ao `all`.
 * Também podemos remover o método `Create`.
 * O único que irá sobrar será o `findByDate`, que é uma regra de negócio e será alterado posteriormente.
-* Removeremos também a interface `CreateAppointmentDTO`
+* Removeremos também a interface `CreateAppointmentDTO`.
 * Inserimos um decorator `EntityRepository` acima da classe, passando o Model como parâmetro.
 * Criamos uma herança com o `extends Repository`, passando o model como parâmetro, que é onde irá ter todos os métodos de conversa com o Banco de Dados.
 * Alteramos a função `findByDate`, usando o `this.findOne` passando no parametro `where` o `date`. Como será uma busca no banco de dados, **a função se tornou assíncrona e o seu retorno uma Promisse**, podendo retornar um Appointment ou Null.
@@ -262,13 +263,13 @@ export default CreateAppointmentService;
 ```
 
 * Removemos a parte do construtor e declaração da variável e deixamos apenas a função `execute`
-* Importamos o método `getCustomRepository` do `typeorm`
+* Importamos o método `getCustomRepository` do `typeorm`.
 * Na função execute atribuímos à variável `appointmentsRepository` o método `getCustomRepository` passando como parâmetro o `AppointmentsRepository` importado no Service.
 * Podemos agora tirar o `this` de todas as declarações da variável `appointmentsRepository` pois a declaração está no escopo da função.
-* A variável `findAppointmentInSameDate` recebe uma promise, então inserimos o `await`
+* A variável `findAppointmentInSameDate` recebe uma promise, então inserimos o `await`.
 * Há só uma pequena diferença no `create` do TypeORM. **Ele apenas cria a instância do objeto Appointment mas não salva no Banco de Dados**.
-* Para salvar usamos o método `save` logo após criar a instância
-* Como o registro será inserido no banco, usamos o `await`, transformando a função em assíncrona e o seu retorno uma Promise
+* Para salvar usamos o método `save` logo após criar a instância.
+* Como o registro será inserido no banco, usamos o `await`, transformando a função em assíncrona e o seu retorno uma Promise.
 
 Com o service salvo, **precisamos agora alterar a Rota**, que será modificada para o Repositório do TypeORM.
 
@@ -313,11 +314,11 @@ export default appointmentsRouter;
 
 * Removemos a variável `appointmentsRepository` do começo do arquivo para ser instanciado dentro das rotas.
 * Na rota do tipo GET, a varável `appointmentsRepository` agora recebe o método `getCustomRepository` recebendo como parâmetro o `AppointmentsRepository`, igual ao Service.
-* O método `all` foi substituído pelo método `find`
-* Como o método `find` é uma promise, inserimos antes o `await` e deixamos a função como Assíncrona
+* O método `all` foi substituído pelo método `find`.
+* Como o método `find` é uma promise, inserimos antes o `await` e deixamos a função como Assíncrona.
 * Na rota do tipo POST, precisamos remover os parâmetros do construtor do `CreateAppointmentService`, já que ele já tem os dados do Repository do TypeORM.
-* A função `execute` recebe o await por ser uma promise
-* A função que trata a rota agora é assíncrona
+* A função `execute` recebe o await por ser uma promise.
+* A função que trata a rota agora é assíncrona.
 
 O servidor ainda não está funcionando, pois quando o Typescript usa a sintaxe de decorators precisamos instalar uma dependência com `yarn add reflect-metadata`.
 
