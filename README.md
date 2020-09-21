@@ -4,11 +4,11 @@
 
 ## Status
 
-<span style="color:orange;">- Nível:  2</span>
+<span style="color:orange;">- Nível:  3</span>
 
-<span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
+<span style="color:red;">- Módulo:  Primeiro projeto com React</span>
 
-<span style="color:darkblue;">- Aula: Criando classe de erro</span>
+<span style="color:darkblue;">- Aula: Criando projeto</span>
 
 ## Desafios
 
