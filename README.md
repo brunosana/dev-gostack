@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
 
-<span style="color:darkblue;">- Aula: Conceitos de JWT</span>
+<span style="color:darkblue;">- Aula: Upload de arquivos</span>
 
 ## Desafios
 
