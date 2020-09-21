@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando Back-end do app</span>
 
-<span style="color:darkblue;">- Aula: Upload de arquivos</span>
+<span style="color:darkblue;">- Aula: Criando classe de erro</span>
 
 ## Desafios
 
