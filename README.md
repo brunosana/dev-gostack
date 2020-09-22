@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Primeiro projeto com React</span>
 
-<span style="color:darkblue;">- Aula: Criando projeto</span>
+<span style="color:darkblue;">- Aula: Criando Rotas</span>
 
 ## Desafios
 
