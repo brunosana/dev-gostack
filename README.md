@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Primeiro projeto com React</span>
 
-<span style="color:darkblue;">- Aula: Estilizando Dashboard</span>
+<span style="color:darkblue;">- Aula: Conectando a API</span>
 
 ## Desafios
 
