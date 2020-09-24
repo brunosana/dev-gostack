@@ -49,7 +49,22 @@ dist
     }
     ]
 ```
+
+Ainda em Rules, definimos como não obrigatório arrow functions que sejam expressões:
+
+```
+"@typescript-eslint/explicit-function-return-type": [
+  "error",
+  {
+    "allowExpressions": true
+  }
+]
+```
+
+
+
 *E logo abaixo das Rules, insira o trecho (com uma vírgula antes óbvio):
+
 ```
 "settings": {
     "import/resolver": {

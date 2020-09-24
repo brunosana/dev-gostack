@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Primeiro projeto com React</span>
 
-<span style="color:darkblue;">- Aula: Conectando a API</span>
+<span style="color:darkblue;">- Aula: Lidando com Erros</span>
 
 ## Desafios
 
@@ -16,4 +16,4 @@
 * [Desafio02](https://github.com/brunosana/rocketseat-gostack-desafio02) concluído
 * [Desafio03](https://github.com/brunosana/rocketseat-gostack-desafio03) concluído
 * [Desafio04](https://github.com/brunosana/rocketseat-gostack-desafio04) concluído
-* [Desafio05](https://github.com/brunosana/rocketseat-gostack-desafio05) concluído
+* [Desafio05](https://github.com/brunosana/rocketseat-gostack-desafio05) concluído 

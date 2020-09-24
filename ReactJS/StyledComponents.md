@@ -92,3 +92,46 @@ export default App;
 ```
 
 Colocamos após o `BrowserRouter` com o `fragment`.
+
+## Passando propriedades como parâmetros em uma Tag Styled Components
+
+Suponha que você tem uma aplicação com uma tag `Form` criada com styled-components. Você quer deixar a borda vermelha caso algum erro aconteça na aplicação, porém esse erro é tratado no `index.ts` da sua página.
+
+Para isso, podemos fazer o seguinte:
+
+Suponha nesse exemplo uma variável `inputError` que é uma string de erro. Quando ela está vazia, significa que não há erro na aplicação.
+
+Vamos passar o parâmetro `hasError` na tag da seguinte forma:
+
+```HTML
+<Form hasError={!!inputError} ></Form>
+```
+
+Agora precisamos importar do `styled-components` o `css`, que é responsável por podermos usar css dentro de uma expressão.
+
+Precisamos também criar uma interface para tipar o parâmetro que será recebido. o começo do código ficará assim:
+
+```
+import styled, { css } from 'styled-components';
+import { shade } from 'polished';
+interface FormProps{
+    hasError: boolean;
+}
+```
+
+Para informar e capturar o parâmetro da tag `Form`, passamos antes da template string, junto com a sua tipagem:
+
+```javascript
+export const Form = styled.form<FormProps>`
+    margin-top: 40px;
+    max-width: 700px;
+    display: flex;
+    border: 2px solid #fff;
+    ${(props) => props.hasError && css`
+        border-color: #c53030;
+    `}
+
+`;
+```
+
+Repare que criamos uma borda nele, e fizemos uma expressão que captura dentro de props, a variável `hasError` e caso haja algum, altera a sua cor, retornando a estilização com o auxílio do `css` do `styled-components`.
