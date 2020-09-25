@@ -6,9 +6,9 @@
 
 <span style="color:orange;">- Nível:  3</span>
 
-<span style="color:red;">- Módulo:  Primeiro projeto com React</span>
+<span style="color:red;">- Módulo:  Iniciando front-end web</span>
 
-<span style="color:darkblue;">- Aula: Estilizando Detalhe</span>
+<span style="color:darkblue;">- Aula: Configurando Estrutura</span>
 
 ## Desafios
 
@@ -16,4 +16,5 @@
 * [Desafio02](https://github.com/brunosana/rocketseat-gostack-desafio02) concluído
 * [Desafio03](https://github.com/brunosana/rocketseat-gostack-desafio03) concluído
 * [Desafio04](https://github.com/brunosana/rocketseat-gostack-desafio04) concluído
-* [Desafio05](https://github.com/brunosana/rocketseat-gostack-desafio05) concluído 
+* [Desafio05](https://github.com/brunosana/rocketseat-gostack-desafio05) concluído
+* [Desafio06](https://github.com/brunosana/rocketseat-gostack-desafio06) concluído
