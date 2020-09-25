@@ -79,3 +79,56 @@ export default App;
 * Importamos o nosso arquivos Routes.
 * Também tipamos a função do componente `App`.
 * Importamos a tag `BrowserRouter` que irá ficar por fora da tag `Routes` importada anteriormente.
+
+## Navegando entre rotas
+
+Suponha que você tem uma página `search` e uma página `read`. A `search` ela pesquisa um determinado conjunto de dados, e ao clicar nesse dado, é direcionado para a página `read` para informações mais detalhadas.
+
+A tag de redirecionamento será a `Link` e podemos importá-la do `react-router-dom`. Esse acesso é feito sem recaregar a página, dando mais performance ao código (podemos deduzir que essa tag estará em um loop):
+
+```jsx
+<Link to={`read/${searchItem.id}`} key={searchItem.id}>
+    <img src={searchItem.image}
+    alt={searchItem.image}
+    />
+    <div>
+        <strong>{searchItem.name}</strong>
+        <p>{searchItem.description}</p>
+    </div>
+</Link>
+```
+
+A tag se comporta semelhante a tag `a`, apenas mudando de `href` para `to`. Veja que estamos passando um `route param` para a rota saber qual item irá ler!
+
+No arquivo `routes.ts`, precisamos informar que o usuário irá passar um parâmetro:
+
+```jsx
+<Switch>
+    <Route path='/search' exact component={Search} />
+    <Route path='/read/:id' component={Read} />
+</Switch>
+```
+
+E na página, para capturarmos os parâmetros passados pela rota, utilizamos um método específico, o `useRouteMatch`. Para podermos capturar os valores de forma correta, criamos uma interface `SearchParams` para passar como parâmetro do `useRouteMatch` e poder ter a intellisense do vscode habilitada para autocompletar os dados. Como estamos passando apenas o ID, vamos informar em forma de string:
+
+```jsx
+interface SearchParams{
+    repository: string;
+}
+```
+
+E agora podemos tipar nosso `useRouteMatch`:
+
+```jsx
+const { params } = useRouteMatch<SearchParams>();
+```
+
+Agora podemos informar o valor passado em uma tag:
+
+```jsx
+return (
+    <>
+        <h1>Search ID: {params.id}</h1>
+    </>
+);
+```
