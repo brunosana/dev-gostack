@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando front-end web</span>
 
-<span style="color:darkblue;">- Aula: Configurando Estrutura</span>
+<span style="color:darkblue;">- Aula: Página de cadastro</span>
 
 ## Desafios
 
