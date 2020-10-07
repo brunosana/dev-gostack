@@ -115,3 +115,62 @@ Em ReactJS, caso essa operaçã seja aplicada de forma interna e o primeiro elem
 & + a {}
 ```
 
+## Explicitar estilização em apenas uma tag do escopo
+
+Suponha a seguinte situação:
+
+```JSX
+<Containter>
+    <form>
+        <input placeholder="E-mail" />
+        <button>Search</button>
+        <a>Forgot email</a>
+    </form>
+    <a>Help</a>
+</Container>
+```
+
+E em seu arquivo `styles.ts`:
+
+```JSX
+export const Container = styled.div`
+    form{
+        input{
+            width: 100%;
+            padding: 16px;
+        }
+        a{
+            width: 100%;
+            color: #dfdfdf;
+        }
+    }
+`;
+```
+
+Porém, você quer estilizar a tag `a` **abaixo do form individualmente sem comprometer a outra tag `a` que está dentro do form.**
+
+Caso você usasse normalmente a estilização, as estilizações das tags seriam comprometidas. Para isso, **vamos usar um artifício informando que as tags a serem estilizadas serão SOMENTE as que estão no mesmo escopo da declaração. Ou seja, se a tag estiver dentro ou fora de outra tag, esta será ignorada**.
+
+Sintaxe: `> a {}`, portanto:
+
+```JSX
+export const Container = styled.div`
+    form{
+        input{
+            width: 100%;
+            padding: 16px;
+        }
+        a{
+            width: 100%;
+            color: #dfdfdf;
+        }
+    }
+    > a {
+        color: #ababab;
+        
+        &:hover{
+            colo: #fff;
+        }
+    }
+`;
+```
