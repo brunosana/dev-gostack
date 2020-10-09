@@ -18,3 +18,7 @@
 * [Desafio04](https://github.com/brunosana/rocketseat-gostack-desafio04) concluído
 * [Desafio05](https://github.com/brunosana/rocketseat-gostack-desafio05) concluído
 * [Desafio06](https://github.com/brunosana/rocketseat-gostack-desafio06) concluído
+
+### Padrões de Projetos
+
+[Referencia](https://www.notion.so/Padr-es-de-projeto-com-ESLint-Prettier-e-EditorConfig-0b57b47a24724c859c0cf226aa0cc3a7)
