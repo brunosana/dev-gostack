@@ -8,7 +8,7 @@
 
 <span style="color:red;">- Módulo:  Iniciando front-end web</span>
 
-<span style="color:darkblue;">- Aula: Validando Cadastro</span>
+<span style="color:darkblue;">- Aula: Validação de Login</span>
 
 ## Desafios
 
